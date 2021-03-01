@@ -1,19 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HumanoidPawn : Pawn
 {
     [SerializeField] private Animator _anim;
     public float speed = 1;
-    public bool isSprinting = false;
-    public Transform target;
     public float rotSpeed = 180f;
+    public Transform target;
+    public bool isSprinting = false;
 
     // Start is called before the first frame update
     public override void Start()
     {
         _anim = GetComponent<Animator>();
+        base.Start();
     }
 
     // Update is called once per frame
@@ -31,6 +33,7 @@ public class HumanoidPawn : Pawn
         {
             this.gameObject.GetComponent<Rigidbody>().AddForce(0, 5, 0, ForceMode.Impulse);
         }
+        base.Update();
     }
 
     public override void Move(Vector3 moveDirection)
@@ -60,6 +63,20 @@ public class HumanoidPawn : Pawn
         {
             return false;
         }
+    }
+
+    public void OnAnimatorIK(int layerIndex)
+    {
+        if (weapon != null)
+        {
+            _anim.SetIKPosition(AvatarIKGoal.LeftHand, weapon.leftHandPoint.position);
+            _anim.SetIKPosition(AvatarIKGoal.RightHand, weapon.rightHandPoint.position);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.LoadScene("Main");
     }
 }
  
