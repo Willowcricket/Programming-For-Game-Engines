@@ -6,12 +6,13 @@ using UnityEngine.SceneManagement;
 public class HumanoidPawn : Pawn
 {
     public Transform target;
-    public bool isSprinting = false;
+    public Pawn pawn;
 
     // Start is called before the first frame update
     public override void Start()
     {
         GameManager.Instance.player = this.gameObject;
+        pawn = GetComponent<Pawn>();
         base.Start();
     }
 
@@ -20,17 +21,37 @@ public class HumanoidPawn : Pawn
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            isSprinting = true;
+            pawn.speed = 1.5f;
+            GetComponent<Animator>().speed = pawn.speed;
         }
         else
         {
-            isSprinting = false;
+            pawn.speed = 1.0f;
+            GetComponent<Animator>().speed = pawn.speed;
         }
+
+        if (currHealth <= 0)
+        {
+            Dies();
+        }
+
         if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
         {
             this.gameObject.GetComponent<Rigidbody>().AddForce(0, 5, 0, ForceMode.Impulse);
         }
         base.Update();
+    }
+
+    void Dies()
+    {
+        currHealth = maxHeath;
+        if (weapon)
+        {
+            Destroy(weapon.gameObject);
+            weapon = null;
+        }
+        GetComponent<Ragdoll>().TheyDied();
+        GetComponent<Respawn>().dead = true;
     }
 
     public override void Move(Vector3 moveDirection)
@@ -53,11 +74,6 @@ public class HumanoidPawn : Pawn
         {
             return false;
         }
-    }
-
-    private void OnDestroy()
-    {
-        //SceneManager.LoadScene("Main");
     }
 }
  

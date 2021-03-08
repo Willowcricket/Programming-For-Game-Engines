@@ -11,7 +11,7 @@ public class Pawn : MonoBehaviour
     public int currHealth = 100;
     public int maxHeath = 100;
 
-    public float speed = 1;
+    public float speed = 1.0f;
     public float rotSpeed = 180f;
 
     // Start is called before the first frame update
@@ -23,11 +23,9 @@ public class Pawn : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        if (currHealth <= 0)
-        {
-            Destroy(this.gameObject);
-        }
+        
     }
+
     public virtual void Move(Vector3 moveDirection)
     {
         moveDirection.Normalize();

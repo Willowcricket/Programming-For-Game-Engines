@@ -28,6 +28,11 @@ public class AIPawn : Pawn
         Vector3 input = agent.desiredVelocity;
         pawn.Move(agent.desiredVelocity);
 
+        if (currHealth <= 0)
+        {
+            Dies();
+        }
+
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
             Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
@@ -46,6 +51,13 @@ public class AIPawn : Pawn
         base.Update();
     }
 
+    void Dies()
+    {
+        currHealth = maxHeath;
+        Destroy(weapon.gameObject);
+        GetComponent<Ragdoll>().TheyDied();
+        GetComponent<Respawn>().dead = true;
+    }
 
     private void OnAnimatorMove()
     {
