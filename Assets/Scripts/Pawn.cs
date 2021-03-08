@@ -6,14 +6,18 @@ public class Pawn : MonoBehaviour
 {
     public Weapon weapon;
     public Transform attachmentPoint;
+    [SerializeField] private Animator _anim;
 
     public int currHealth = 100;
     public int maxHeath = 100;
 
+    public float speed = 1;
+    public float rotSpeed = 180f;
+
     // Start is called before the first frame update
     public virtual void Start()
     {
-        
+        _anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -26,7 +30,12 @@ public class Pawn : MonoBehaviour
     }
     public virtual void Move(Vector3 moveDirection)
     {
+        moveDirection.Normalize();
 
+        moveDirection = transform.InverseTransformDirection(moveDirection);
+
+        _anim.SetFloat("Forward", moveDirection.z * speed);
+        _anim.SetFloat("Right", moveDirection.x * speed);
     }
 
     public virtual void EquipWeapon(Weapon weaponToEquip)

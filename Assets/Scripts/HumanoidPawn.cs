@@ -5,16 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class HumanoidPawn : Pawn
 {
-    [SerializeField] private Animator _anim;
-    public float speed = 1;
-    public float rotSpeed = 180f;
     public Transform target;
     public bool isSprinting = false;
 
     // Start is called before the first frame update
     public override void Start()
     {
-        _anim = GetComponent<Animator>();
+        GameManager.Instance.player = this.gameObject;
         base.Start();
     }
 
@@ -40,13 +37,6 @@ public class HumanoidPawn : Pawn
     {
         Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
-
-        moveDirection.Normalize();
-
-        moveDirection = transform.InverseTransformDirection(moveDirection);
-
-        _anim.SetFloat("Forward", moveDirection.z * speed);
-        _anim.SetFloat("Right", moveDirection.x * speed);
         base.Move(moveDirection);
     }
 
@@ -65,18 +55,9 @@ public class HumanoidPawn : Pawn
         }
     }
 
-    public void OnAnimatorIK(int layerIndex)
-    {
-        if (weapon != null)
-        {
-            _anim.SetIKPosition(AvatarIKGoal.LeftHand, weapon.leftHandPoint.position);
-            _anim.SetIKPosition(AvatarIKGoal.RightHand, weapon.rightHandPoint.position);
-        }
-    }
-
     private void OnDestroy()
     {
-        SceneManager.LoadScene("Main");
+        //SceneManager.LoadScene("Main");
     }
 }
  

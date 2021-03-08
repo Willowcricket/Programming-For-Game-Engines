@@ -1251,6 +1251,7 @@ GameObject:
   - component: {fileID: 5334031537588028098}
   - component: {fileID: 5334031537588028099}
   - component: {fileID: 5334031537588028111}
+  - component: {fileID: 2354873757354376013}
   m_Layer: 0
   m_Name: PlayerPawn
   m_TagString: Player
@@ -1345,6 +1346,22 @@ MonoBehaviour:
   rotSpeed: 180
   target: {fileID: 0}
   isSprinting: 0
+--- !u!114 &2354873757354376013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4118441228702144996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aced57e862dfb84458012c81e53a1f89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ikActive: 1
+  rightHandObj: {fileID: 0}
+  leftHandObj: {fileID: 0}
+  lookObj: {fileID: 0}
 --- !u!1 &4271586867438844891
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,19 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AIPawn : Pawn
 {
+    public GameObject target;
+    public Pawn pawn;
+    public NavMeshAgent agent;
+
     // Start is called before the first frame update
     public override void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+        pawn = GetComponent<Pawn>();
         base.Start();
     }
 
     // Update is called once per frame
     public override void Update()
     {
-        if (weapon != null)
+        GetComponent<Animator>().speed = pawn.speed;
+
+        target = GameManager.Instance.player;
+        agent.SetDestination(target.transform.position);
+
+        Vector3 input = agent.desiredVelocity;
+        pawn.Move(agent.desiredVelocity);
+
+        if (agent.remainingDistance <= agent.stoppingDistance)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(target.transform.position - transform.position);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotSpeed * Time.deltaTime);
+        }
+
+        if (weapon != null && agent.remainingDistance <= 5.5)
         {
             if (Time.time >= weapon.nextTimeToFire)
             {
@@ -21,6 +42,14 @@ public class AIPawn : Pawn
                 weapon.TriggerPulled();
             }
         }
+
         base.Update();
     }
+
+
+    private void OnAnimatorMove()
+    {
+        agent.velocity = GetComponent<Animator>().velocity;
+    }
+
 }
