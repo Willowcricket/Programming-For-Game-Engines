@@ -8,6 +8,7 @@ public class AIPawn : Pawn
     public GameObject target;
     public Pawn pawn;
     public NavMeshAgent agent;
+    public Canvas canvas;
 
     // Start is called before the first frame update
     public override void Start()
@@ -53,10 +54,12 @@ public class AIPawn : Pawn
 
     void Dies()
     {
+        canvas.enabled = false;
         currHealth = maxHeath;
         Destroy(weapon.gameObject);
         GetComponent<Ragdoll>().TheyDied();
         GetComponent<Respawn>().dead = true;
+        this.GetComponent<CDF>().DropARandoItem();
     }
 
     private void OnAnimatorMove()

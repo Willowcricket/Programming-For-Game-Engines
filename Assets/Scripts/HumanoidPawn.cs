@@ -7,6 +7,7 @@ public class HumanoidPawn : Pawn
 {
     public Transform target;
     public Pawn pawn;
+    public int lives = 3;
 
     // Start is called before the first frame update
     public override void Start()

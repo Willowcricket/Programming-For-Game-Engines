@@ -23,10 +23,15 @@ public class Respawn : MonoBehaviour
                 if (AI == true)
                 {
                     Destroy(this.gameObject);
+                    GameManager.Instance.playerKills++;
                 }
-                dead = false;
-                timeForDeath = nextTimeToDeath;
-                Lives();
+                else if (GameManager.Instance.player.GetComponent<HumanoidPawn>().lives > -1)
+                {
+                    dead = false;
+                    timeForDeath = nextTimeToDeath;
+                    Lives();
+                    GameManager.Instance.player.GetComponent<HumanoidPawn>().lives -= 1;
+                }
             }
         }
     }
